@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>طلب المنتج</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background-color: #fff;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+
+    .product-summary {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 30px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 20px;
+    }
+
+    .product-summary img {
+      width: 120px;
+      height: 120px;
+      border-radius: 16px;
+      object-fit: cover;
+      border: 1px solid #ccc;
+    }
+
+    .product-details h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      color: #333;
+    }
+
+    .product-details p {
+      margin: 5px 0;
+      font-size: 16px;
+    }
+
+    form label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    form input, form textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+
+    form button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 14px;
+      background-color: #ff5e63;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background-color: #e04d53;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="cart-items"></div>
+
+    <form action="https://formsubmit.co/yhiamohammed65@gmail.com" method="POST">
+      <input type="hidden" name="_next" value="thanks.html">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="text" name="_honey" style="display:none">
+
+      <input type="hidden" id="hidden-products" name="تفاصيل الطلب">
+
+      <label for="name">اسمك الكامل</label>
+      <input type="text" id="name" name="الاسم" required>
+
+      <label for="phone">رقم الهاتف</label>
+      <input type="tel" id="phone" name="الهاتف" required>
+
+      <label for="address">العنوان</label>
+      <textarea id="address" name="العنوان" rows="3" required></textarea>
+
+      <button type="submit">إرسال الطلب</button>
+    </form>
+  </div>
+
+  <script>
+    const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartContainer = document.getElementById("cart-items");
+    const hiddenInput = document.getElementById("hidden-products");
+
+    if (cartItems.length === 0) {
+      cartContainer.innerHTML = '<p>لا توجد منتجات في السلة.</p>';
+    } else {
+      let summaryHTML = "";
+      let orderSummary = "";
+
+      cartItems.forEach((item, index) => {
+        summaryHTML += `
+          <div class="product-summary">
+            <img src="${item.image}" alt="صورة المنتج">
+            <div class="product-details">
+              <h3>${item.name}</h3>
+              <p>السعر: ${item.price} جنيه</p>
+              <p>الكمية: ${item.qty}</p>
+            </div>
+          </div>
+        `;
+
+        orderSummary += `(${index + 1}) ${item.name} - ${item.qty} × ${item.price} جنيه\n`;
+      });
+
+      cartContainer.innerHTML = summaryHTML;
+      hiddenInput.value = orderSummary;
+    }
+  </script>
+</body>
+</html>
